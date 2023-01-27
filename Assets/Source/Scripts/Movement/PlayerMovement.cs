@@ -11,17 +11,17 @@ public class PlayerMovement : MonoBehaviour
 
     private void Update()
     {
-        Move(_inputManager.MoveDirection);
+        Move(_inputManager.MoveDirectionVector3);
     }
 
     private void Move(Vector3 direction)
     {
         CurrentSpeed = direction.magnitude * _maxSpeed;
         
-        if(direction.magnitude > float.Epsilon)
-            transform.LookAt(direction);
+        // if(direction.magnitude > float.Epsilon)
+        //     transform.LookAt(direction);
 
         _agent.speed = CurrentSpeed;
-        _agent.destination = direction;
+        _agent.destination = transform.position + direction;
     }
 }
