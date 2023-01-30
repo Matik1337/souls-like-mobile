@@ -1,6 +1,8 @@
+using System;
 using UnityEngine;
 
-public class WeaponInfo : MonoBehaviour
+[Serializable]
+public struct WeaponInfo
 {
     [SerializeField] private string _name;
     [SerializeField] private int _cost;

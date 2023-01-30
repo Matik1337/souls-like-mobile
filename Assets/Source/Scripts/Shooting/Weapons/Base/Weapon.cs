@@ -42,7 +42,7 @@ public class Weapon : MonoBehaviour
     {
         while (IsShooting)
         {
-            BulletsPool.Shoot(ShootPoint.position, DirectionPoint.position);
+            BulletsPool.Shoot(ShootPoint.position, GetNoisedDirection(DirectionPoint.position));
                         
             yield return new WaitForSeconds(1 / Frequency);
         }

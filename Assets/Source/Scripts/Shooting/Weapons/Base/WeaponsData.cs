@@ -10,7 +10,7 @@ public class WeaponsData : ScriptableObject
 
     public IEnumerable<WeaponInfo> Weapons => _weapons;
 
-    public WeaponInfo GetWeaponByName(string weaponName)
+    public WeaponInfo GetWeapon(string weaponName)
     {
         return _weapons.First(w => w.Name == weaponName);
     }

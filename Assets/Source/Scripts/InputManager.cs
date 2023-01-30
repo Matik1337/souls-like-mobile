@@ -42,13 +42,13 @@ public class InputManager : MonoBehaviour
 
     private Vector2 RotateDirection(Vector2 direction, float angle)
     {
-        float angleRad = -angle * Mathf.Deg2Rad;
+        float angleRad = -angle * 2;
         Vector2 result = direction;
-        
+
         result.x = direction.x * Mathf.Cos(angleRad) - direction.y * Mathf.Sin(angleRad);
         result.y = direction.x * Mathf.Sin(angleRad) + direction.y * Mathf.Cos(angleRad);
 
-        return result;
+        return result.normalized;
     }
 
     private void OnAbilityButtonClicked() => AbilityButtonClicked?.Invoke();
