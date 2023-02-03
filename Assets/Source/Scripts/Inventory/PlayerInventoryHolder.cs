@@ -10,6 +10,7 @@ public class PlayerInventoryHolder : MonoBehaviour
     private List<Weapon> _equipedWeapons = new List<Weapon>();
     
     public Weapon CurrentWeapon { get; private set; }
+    public Armor CurrentArmor { get; private set; }
 
     private void Awake()
     {

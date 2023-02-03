@@ -12,7 +12,7 @@ public class Health : MonoBehaviour
     public int CurrentValue {get; private set;}
     public event UnityAction ValueChanged;
 
-    private void Start()
+    private void Awake()
     {
         CurrentValue = _startHealth;
 
