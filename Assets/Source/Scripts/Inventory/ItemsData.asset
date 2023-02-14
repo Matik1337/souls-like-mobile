@@ -10,16 +10,30 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 5486f7258127e4646a618b236891985d, type: 3}
-  m_Name: WeaponsData
+  m_Name: ItemsData
   m_EditorClassIdentifier: 
   _weapons:
   - _name: PP
     _cost: 200
     _icon: {fileID: 0}
+    _itemType: 0
     _quality: 0
-    _prefab: {fileID: 2430735021373463477, guid: b5631730fc4022245af52ef949fbfde6, type: 3}
+    _prefab: {fileID: 2430735021373463472, guid: b5631730fc4022245af52ef949fbfde6, type: 3}
+    _count: 0
+    _loskCount: 1
   - _name: Pistol
     _cost: 100
     _icon: {fileID: 0}
+    _itemType: 0
     _quality: 0
-    _prefab: {fileID: 2430735021373463477, guid: e3893690249125e4699e2561e55a170a, type: 3}
+    _prefab: {fileID: 2430735021373463472, guid: e3893690249125e4699e2561e55a170a, type: 3}
+    _count: 0
+    _loskCount: 1
+  - _name: Jacket
+    _cost: 100
+    _icon: {fileID: 0}
+    _itemType: 1
+    _quality: 0
+    _prefab: {fileID: 2735079907578006133, guid: b37a15f8c4783c84a8ca4ccb51a67beb, type: 3}
+    _count: 0
+    _loskCount: 1
