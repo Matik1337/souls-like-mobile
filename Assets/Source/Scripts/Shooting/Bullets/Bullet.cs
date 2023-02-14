@@ -52,7 +52,7 @@ public class Bullet : MonoBehaviour
         {
             //health.TakeDamage(damage);
         }
-        Debug.Log("Collision");
+        //Debug.Log("Collision");
         ResetState();
     }
 }
