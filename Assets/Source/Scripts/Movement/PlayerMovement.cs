@@ -5,22 +5,20 @@ using UnityEngine.Serialization;
 public class PlayerMovement : MonoBehaviour
 {
     [SerializeField] private NavMeshAgent _agent;
-    [FormerlySerializedAs("mobileInputManager")] [FormerlySerializedAs("_inputManager")] [SerializeField] private InputManager inputManager;
+    [SerializeField] private InputManager _inputManager;
     [SerializeField] private float _maxSpeed;
+    [SerializeField] private float _runSpeed;
 
     public float CurrentSpeed { get; private set; }
 
     private void Update()
     {
-        Move(inputManager.MoveDirectionVector3);
+        Move(_inputManager.MoveDirectionVector3, _inputManager.ShiftPressed || _inputManager.ShootingDirection == Vector2.zero ? _runSpeed : _maxSpeed);
     }
 
-    private void Move(Vector3 direction)
+    private void Move(Vector3 direction, float speed)
     {
-        CurrentSpeed = direction.magnitude * _maxSpeed;
-        
-        // if(direction.magnitude > float.Epsilon)
-        //     transform.LookAt(direction);
+        CurrentSpeed = direction.magnitude * speed;
 
         _agent.speed = CurrentSpeed;
         _agent.destination = transform.position + direction;

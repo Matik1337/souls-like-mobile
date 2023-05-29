@@ -13,7 +13,7 @@ public class Weapon : MonoBehaviour
     
     public bool IsShooting { get; private set; }
     public float Frequency => _frequency;
-
+    
     private Coroutine _coroutine;
 
     public virtual void StartShoot()

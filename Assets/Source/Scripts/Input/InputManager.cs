@@ -21,10 +21,17 @@ public class InputManager : MonoBehaviour
     public Vector3 MoveDirectionVector3 => ToVector3(MoveDirection);
     public Vector3 MouseHitPoint { get; private set; }
     public InputTypes CurrentType => _inputType;
+    public bool ShiftPressed { get; private set; }
+    public bool ShootingActive { get; private set; }
     
     public event UnityAction ChangeWeaponButtonClicked;
     public event UnityAction AbilityButtonClicked;
-    
+
+    private void Awake()
+    {
+        ShootingActive = false;
+    }
+
     private void OnEnable()
     {
         _buttonUseAbility.onClick.AddListener(OnAbilityButtonClicked);
@@ -61,6 +68,9 @@ public class InputManager : MonoBehaviour
                 AbilityButtonClicked?.Invoke();
             if(Input.GetKeyDown(KeyCode.F))
                 ChangeWeaponButtonClicked?.Invoke();
+            
+            ShiftPressed = Input.GetKey(KeyCode.LeftShift);
+            ShootingActive = Input.GetMouseButton(0) && !ShiftPressed;
         }
     }
 
@@ -79,10 +89,17 @@ public class InputManager : MonoBehaviour
     private Vector2 GetShootDirection()
     {
         if (_inputType == InputTypes.Mobile)
-            return RotateDirection(_shootingJoystick.Direction, _cameraTransform.rotation.y);
-        
+        {
+            Vector2 direction = RotateDirection(_shootingJoystick.Direction, _cameraTransform.rotation.y);
+            ShootingActive = direction != Vector2.zero;
+
+            return direction;
+        }
+
         if (_inputType == InputTypes.Standalone)
+        {
             return GetMouseDeviation();
+        }
 
         throw new Exception("No current Input Type realisation");
     }
@@ -91,7 +108,7 @@ public class InputManager : MonoBehaviour
     {
         Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
 
-        if (Input.GetMouseButton(0) && Physics.Raycast(ray, out RaycastHit hit, 100, _groundLayer))
+        if (!ShiftPressed && Physics.Raycast(ray, out RaycastHit hit, 100, _groundLayer))
         {
             MouseHitPoint = hit.point;
             

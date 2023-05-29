@@ -6,7 +6,7 @@ using UnityEngine.Serialization;
 
 public class PlayerShooting : MonoBehaviour
 {
-    [FormerlySerializedAs("mobileInputManager")] [FormerlySerializedAs("_inputManager")] [SerializeField] private InputManager inputManager;
+    [SerializeField] private InputManager _inputManager;
     [SerializeField] private Transform _selfTransform;
     [SerializeField] private float _rotationSpeed = 3;
     [SerializeField] private PlayerInventoryHolder _playerInventoryHolder;
@@ -15,34 +15,36 @@ public class PlayerShooting : MonoBehaviour
 
     private void OnEnable()
     {
-        inputManager.ChangeWeaponButtonClicked += _playerInventoryHolder.ChangeWeapon;
+        _inputManager.ChangeWeaponButtonClicked += _playerInventoryHolder.ChangeWeapon;
     }
 
     private void OnDisable()
     {
-        inputManager.ChangeWeaponButtonClicked -= _playerInventoryHolder.ChangeWeapon;
+        _inputManager.ChangeWeaponButtonClicked -= _playerInventoryHolder.ChangeWeapon;
     }
 
     private void Update()
     {
-        ProcessInput(inputManager.ShootingDirectionVector3);
+        ProcessInput(_inputManager.ShootingDirectionVector3, _inputManager.ShootingActive);
     }
 
-    private void ProcessInput(Vector3 direction)
+    private void ProcessInput(Vector3 direction, bool canShoot)
     {
         if (direction.magnitude > Mathf.Epsilon)
         {
             _selfTransform.rotation = Quaternion.Lerp(_selfTransform.rotation, Quaternion.LookRotation(direction), _rotationSpeed * Time.deltaTime);
 
-            if (!_currentWeapon.IsShooting && direction.magnitude > .5f)
+            if (canShoot && !_currentWeapon.IsShooting && direction.magnitude > .5f)
                 _currentWeapon.StartShoot();
+            else if (!canShoot && _currentWeapon.IsShooting)
+                _currentWeapon.StopShoot();
 
         }
         else
         {
             _selfTransform.localRotation = Quaternion.Lerp(_selfTransform.localRotation, Quaternion.identity, _rotationSpeed * Time.deltaTime);
 
-            if (_currentWeapon.IsShooting)
+            if (!canShoot && _currentWeapon.IsShooting)
                 _currentWeapon.StopShoot();
         }
     }
