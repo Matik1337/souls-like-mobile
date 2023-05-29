@@ -14,12 +14,16 @@ public class Weapon : MonoBehaviour
     public bool IsShooting { get; private set; }
     public float Frequency => _frequency;
 
+    private Coroutine _coroutine;
+
     public virtual void StartShoot()
     {
         if (!IsShooting)
         {
             IsShooting = true;
-            StartCoroutine(Shoot());
+            
+            if(_coroutine == null)
+                _coroutine = StartCoroutine(Shoot());
         }
     }
 
@@ -53,6 +57,8 @@ public class Weapon : MonoBehaviour
             
             yield return new WaitForSeconds(1 / Frequency);
         }
+
+        _coroutine = null;
     }
 
     protected virtual Vector3 GetNoisedDirection(Vector3 direction, float spreading)
