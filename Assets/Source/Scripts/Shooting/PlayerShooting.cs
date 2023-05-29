@@ -2,10 +2,11 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
+using UnityEngine.Serialization;
 
 public class PlayerShooting : MonoBehaviour
 {
-    [SerializeField] private InputManager _inputManager;
+    [FormerlySerializedAs("mobileInputManager")] [FormerlySerializedAs("_inputManager")] [SerializeField] private InputManager inputManager;
     [SerializeField] private Transform _selfTransform;
     [SerializeField] private float _rotationSpeed = 3;
     [SerializeField] private PlayerInventoryHolder _playerInventoryHolder;
@@ -14,17 +15,17 @@ public class PlayerShooting : MonoBehaviour
 
     private void OnEnable()
     {
-        _inputManager.ChangeWeaponButtonClicked += _playerInventoryHolder.ChangeWeapon;
+        inputManager.ChangeWeaponButtonClicked += _playerInventoryHolder.ChangeWeapon;
     }
 
     private void OnDisable()
     {
-        _inputManager.ChangeWeaponButtonClicked -= _playerInventoryHolder.ChangeWeapon;
+        inputManager.ChangeWeaponButtonClicked -= _playerInventoryHolder.ChangeWeapon;
     }
 
     private void Update()
     {
-        ProcessInput(_inputManager.ShootingDirectionVector3);
+        ProcessInput(inputManager.ShootingDirectionVector3);
     }
 
     private void ProcessInput(Vector3 direction)

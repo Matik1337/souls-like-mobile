@@ -1,17 +1,18 @@
 using UnityEngine;
 using UnityEngine.AI;
+using UnityEngine.Serialization;
 
 public class PlayerMovement : MonoBehaviour
 {
     [SerializeField] private NavMeshAgent _agent;
-    [SerializeField] private InputManager _inputManager;
+    [FormerlySerializedAs("mobileInputManager")] [FormerlySerializedAs("_inputManager")] [SerializeField] private InputManager inputManager;
     [SerializeField] private float _maxSpeed;
 
     public float CurrentSpeed { get; private set; }
 
     private void Update()
     {
-        Move(_inputManager.MoveDirectionVector3);
+        Move(inputManager.MoveDirectionVector3);
     }
 
     private void Move(Vector3 direction)
