@@ -1,126 +1,38 @@
-using System;
+using System.Collections;
+using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Events;
-using UnityEngine.UI;
 
-public class InputManager : MonoBehaviour
+public abstract class InputManager : MonoBehaviour
 {
-    [SerializeField] private InputTypes _inputType;
-    [SerializeField] private VariableJoystick _movementJoystick;
-    [SerializeField] private VariableJoystick _shootingJoystick;
-    [SerializeField] private Button _buttonWeaponChange;
-    [SerializeField] private Button _buttonUseAbility;
-    [SerializeField] private LayerMask _groundLayer;
-
-    private Transform _cameraTransform;
-    private Vector3 ToVector3(Vector2 vector) => new (vector.x, 0, vector.y);
-
-    public Vector2 ShootingDirection => GetShootDirection();
-    public Vector2 MoveDirection => GetMoveDirection();
-    public Vector3 ShootingDirectionVector3 => ToVector3(ShootingDirection);
-    public Vector3 MoveDirectionVector3 => ToVector3(MoveDirection);
-    public Vector3 MouseHitPoint { get; private set; }
-    public InputTypes CurrentType => _inputType;
-    public bool ShiftPressed { get; private set; }
-    public bool ShootingActive { get; private set; }
+    public bool NeedRun { get; protected set; }
+    public bool NeedShoot { get; protected set; }
     
     public event UnityAction ChangeWeaponButtonClicked;
     public event UnityAction AbilityButtonClicked;
+    public event UnityAction InteractionButtonClicked;
+    
+    public abstract Vector3 GetMoveDirection();
+    public abstract Vector3 GetShootDirection();
 
-    private void Awake()
+    protected void AbilityClick()
     {
-        ShootingActive = false;
+        AbilityButtonClicked?.Invoke();
     }
 
-    private void OnEnable()
+    protected void WeaponClick()
     {
-        _buttonUseAbility.onClick.AddListener(OnAbilityButtonClicked);
-        _buttonWeaponChange.onClick.AddListener(OnWeaponChangeButtonClicked);
+        ChangeWeaponButtonClicked?.Invoke();
     }
 
-    private void OnDisable()
+    protected void Interact()
     {
-        _buttonUseAbility.onClick.RemoveListener(OnAbilityButtonClicked);
-        _buttonWeaponChange.onClick.RemoveListener(OnWeaponChangeButtonClicked);
-    }
-
-    private void Start()
-    {
-        Camera mainCamera = Camera.main;
-        
-        if(mainCamera)
-            _cameraTransform = mainCamera.transform;
-
-        if (_inputType == InputTypes.Standalone)
-        {
-            _movementJoystick.gameObject.SetActive(false);
-            _shootingJoystick.gameObject.SetActive(false);
-            _buttonUseAbility.gameObject.SetActive(false);
-            _buttonWeaponChange.gameObject.SetActive(false);
-        }
-    }
-
-    private void Update()
-    {
-        if (_inputType == InputTypes.Standalone)
-        {
-            if(Input.GetKeyDown(KeyCode.Q))
-                AbilityButtonClicked?.Invoke();
-            if(Input.GetKeyDown(KeyCode.F))
-                ChangeWeaponButtonClicked?.Invoke();
-            
-            ShiftPressed = Input.GetKey(KeyCode.LeftShift);
-            ShootingActive = Input.GetMouseButton(0) && !ShiftPressed;
-        }
-    }
-
-    private Vector2 GetMoveDirection()
-    {
-        if (_inputType == InputTypes.Mobile)
-            return RotateDirection(_movementJoystick.Direction, _cameraTransform.rotation.y);
-        
-        if (_inputType == InputTypes.Standalone)
-            return RotateDirection(new Vector2(Input.GetAxis("Horizontal"), Input.GetAxis("Vertical")),
-                _cameraTransform.rotation.y);
-
-        throw new Exception("No current Input Type realisation");
-    }
-
-    private Vector2 GetShootDirection()
-    {
-        if (_inputType == InputTypes.Mobile)
-        {
-            Vector2 direction = RotateDirection(_shootingJoystick.Direction, _cameraTransform.rotation.y);
-            ShootingActive = direction != Vector2.zero;
-
-            return direction;
-        }
-
-        if (_inputType == InputTypes.Standalone)
-        {
-            return GetMouseDeviation();
-        }
-
-        throw new Exception("No current Input Type realisation");
-    }
-
-    private Vector2 GetMouseDeviation()
-    {
-        Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
-
-        if (!ShiftPressed && Physics.Raycast(ray, out RaycastHit hit, 100, _groundLayer))
-        {
-            MouseHitPoint = hit.point;
-            
-            Vector3 direction = MouseHitPoint - transform.position;
-            
-            return new Vector2(direction.x, direction.z);
-        }
-        
-        return Vector2.zero;
+        InteractionButtonClicked?.Invoke();
     }
     
-    private Vector2 RotateDirection(Vector2 direction, float angle)
+    protected Vector3 ToVector3(Vector2 vector) => new (vector.x, 0, vector.y);
+    
+    protected Vector2 RotateDirection(Vector2 direction, float angle)
     {
         if (direction == Vector2.zero)
             return direction;
@@ -136,7 +48,4 @@ public class InputManager : MonoBehaviour
 
         return result;
     }
-
-    private void OnAbilityButtonClicked() => AbilityButtonClicked?.Invoke();
-    private void OnWeaponChangeButtonClicked() => ChangeWeaponButtonClicked?.Invoke();
 }

@@ -25,7 +25,7 @@ public class PlayerShooting : MonoBehaviour
 
     private void Update()
     {
-        ProcessInput(_inputManager.ShootingDirectionVector3, _inputManager.ShootingActive);
+        ProcessInput(_inputManager.GetShootDirection(), _inputManager.NeedShoot);
     }
 
     private void ProcessInput(Vector3 direction, bool canShoot)
