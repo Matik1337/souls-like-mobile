@@ -5,6 +5,7 @@ using UnityEngine;
 public struct ItemInfo
 {
     [SerializeField] private string _name;
+    [SerializeField] private int _id;
     [SerializeField] private int _cost;
     [SerializeField] private Sprite _icon;
     [SerializeField] private ItemType _itemType;
@@ -14,6 +15,7 @@ public struct ItemInfo
     [SerializeField] private bool _loskCount;
     
     public string Name => _name;
+    public int ID => _id;
     public int Cost => _cost;
     public Sprite Icon => _icon;
     public ItemQuality Quality => _quality;

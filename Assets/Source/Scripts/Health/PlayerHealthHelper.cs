@@ -3,7 +3,7 @@ using UnityEngine;
 public class PlayerHealthHelper : MonoBehaviour
 {
     [SerializeField] private Health _health;
-    [SerializeField] private PlayerInventoryHolder _inventory;
+    [SerializeField] private GameInventoryHolder _inventory;
 
     public void TakeDamage(int damage, EnemyClass enemyClass)
     {

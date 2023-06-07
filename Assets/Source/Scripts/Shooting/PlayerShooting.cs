@@ -6,27 +6,27 @@ using UnityEngine.Serialization;
 
 public class PlayerShooting : MonoBehaviour
 {
-    [SerializeField] private InputManager _inputManager;
     [SerializeField] private Transform _selfTransform;
     [SerializeField] private float _rotationSpeed = 3;
-    [SerializeField] private PlayerInventoryHolder _playerInventoryHolder;
 
-    private Weapon _currentWeapon => _playerInventoryHolder.CurrentWeapon;
+    private IWeaponAcсess _weapon;
 
-    private void OnEnable()
-    {
-        _inputManager.ChangeWeaponButtonClicked += _playerInventoryHolder.ChangeWeapon;
-    }
+    private Weapon _currentWeapon => _weapon.GetCurrentWeapon();
 
-    private void OnDisable()
-    {
-        _inputManager.ChangeWeaponButtonClicked -= _playerInventoryHolder.ChangeWeapon;
-    }
-
-    private void Update()
-    {
-        ProcessInput(_inputManager.GetShootDirection(), _inputManager.NeedShoot);
-    }
+    // private void OnEnable()
+    // {
+    //     _inputManager.ChangeWeaponButtonClicked += _playerInventoryHolder.ChangeWeapon;
+    // }
+    //
+    // private void OnDisable()
+    // {
+    //     _inputManager.ChangeWeaponButtonClicked -= _playerInventoryHolder.ChangeWeapon;
+    // }
+    //
+    // private void Update()
+    // {
+    //     ProcessInput(_inputManager.GetShootDirection(), _inputManager.NeedShoot);
+    // }
 
     private void ProcessInput(Vector3 direction, bool canShoot)
     {

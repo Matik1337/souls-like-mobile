@@ -2,17 +2,18 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
+using UnityEngine.Serialization;
 
 [Serializable]
 public class Inventory
 {
     [SerializeField] private List<ItemInfo> _items = new List<ItemInfo>();
-    [SerializeField] private List<ItemInfo> equippedWeapons = new List<ItemInfo>();
+    [SerializeField] private List<ItemInfo> _equippedWeapons = new List<ItemInfo>();
     [SerializeField] private ItemInfo _equippedArmor;
     [SerializeField] private int maxEquippedWeaponsCount = 2;
 
     public List<ItemInfo> Items => _items;
-    public List<ItemInfo> EquippedWeapons => equippedWeapons;
+    public List<ItemInfo> EquippedWeapons => _equippedWeapons;
     public ItemInfo EquippedArmor => _equippedArmor;
     public static string SaveKey = nameof(Inventory);
 
@@ -37,16 +38,17 @@ public class Inventory
         if (_items.Contains(item))
             _items.Remove(item);
         
-        //Disequip(item);
+        if(item.ItemType == ItemType.Weapon)
+            DisequipWeapon(item);
     }
 
     public void EquipWeapon(ItemInfo item)
     {
-        if(item.ItemType == ItemType.Weapon && _items.Contains(item) && ! equippedWeapons.Contains(item))
+        if(item.ItemType == ItemType.Weapon && _items.Contains(item) && ! _equippedWeapons.Contains(item))
         {
-            if(equippedWeapons.Count < MaxEquippedWeaponsCount)
+            if(_equippedWeapons.Count < MaxEquippedWeaponsCount)
             {
-                equippedWeapons.Add(item);
+                _equippedWeapons.Add(item);
             }
         }
     }
@@ -60,9 +62,9 @@ public class Inventory
     }
     public void DisequipWeapon(ItemInfo item)
     {
-        if (item.ItemType == ItemType.Weapon && equippedWeapons.Contains(item))
+        if (item.ItemType == ItemType.Weapon && _equippedWeapons.Contains(item))
         {
-            equippedWeapons.Remove(item);
+            _equippedWeapons.Remove(item);
         }
     }
 

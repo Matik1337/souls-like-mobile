@@ -18,11 +18,11 @@ public class InventoryInit : MonoBehaviour
         {
             foreach (var index in _startWeapons)
             {
-                inventory.Add(itemData.GetWeapon(index));
+                inventory.Add(itemData.GetItem(index));
                 inventory.EquipWeapon(inventory.Items.Last());
             }
             
-            inventory.Add(itemData.GetWeapon(_startArmor));
+            inventory.Add(itemData.GetItem(_startArmor));
             inventory.EquipArmor(inventory.Items.Last());
             inventory.Save();
         }
