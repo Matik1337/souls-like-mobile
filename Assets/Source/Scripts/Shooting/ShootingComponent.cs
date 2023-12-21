@@ -1,5 +1,4 @@
-using System.Collections;
-using System.Collections.Generic;
+using System;
 using UnityEngine;
 
 public class ShootingComponent : MonoBehaviour
@@ -12,6 +11,9 @@ public class ShootingComponent : MonoBehaviour
     
     public void ProcessInput(Vector3 direction, bool canShoot)
     {
+        if (!_currentWeapon)
+            throw new Exception("Current weapon is not initialized");
+        
         if (direction.magnitude > Mathf.Epsilon)
         {
             _selfTransform.rotation = Quaternion.Lerp(_selfTransform.rotation, Quaternion.LookRotation(direction), _rotationSpeed * Time.deltaTime);

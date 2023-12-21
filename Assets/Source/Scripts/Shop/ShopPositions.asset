@@ -12,3 +12,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6207562dcda442b49aab776f6b8eb245, type: 3}
   m_Name: ShopPositions
   m_EditorClassIdentifier: 
+  _shopPositions:
+  - _rewardID: 0
+    _softCurrencyCost: 0
+    _resourceID: 0
+    _tradeItemID: 0
+  - _rewardID: 0
+    _softCurrencyCost: 0
+    _resourceID: 0
+    _tradeItemID: 0
